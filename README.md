@@ -1,8 +1,14 @@
-greenpack: a serialization convention for msgpack2; adds field versioning and type annotation.
+truepack: a serialization convention for msgpack2; adds field versioning and type annotation.
 ==========
 
-`greenpack` is a simple convention for naming fields in `msgpack` data: we take the
+`truepack` is two things:
+
+(1) a convention for naming fields in `msgpack` data: we take the
 original field name and append a version number and basic type indicator.
+
+(2) we encode integers using the true and accurate msgpack type information.
+    Readers read exactly what writers wrote. No hidden compression is applied.
+    No sneaky type transformation is attempted.
 
 # the main idea
 
@@ -17,9 +23,9 @@ type A struct {
   Friend   bool        `zid:"5"`
 }
 
-then when greenpack serializes, the it looks like msgpack2 on the wire with extended field names:
+then when truepack serializes, the it looks like msgpack2 on the wire with extended field names:
          
-greenpack
+truepack
 --------              
 a := A{               
   "Name_zid00_str"  :  "Atlanta",
@@ -32,21 +38,21 @@ a := A{
 
 ```
 
-Notice the only thing that changed with respect to the msgpack2 encoding is that the the fieldnames have been extended to contain a version and a type clue.
+Notice the only thing that changed with respect to the msgpack2 encoding is that the the fieldnames have been extended to contain a version and a type clue. Oh, and contrary to most msgpack bindings, we write the original (Go) type for integers, not the smallest type of integer that will fit.
 
 `msgpack2` [https://github.com/msgpack/msgpack/blob/master/spec.md] [http://msgpack.org] enjoys wide cross-language support, and provides efficient and self-contained data serialization. We find only two problems with msgpack2: weak support for data evolution, and insufficiently strong typing of integers.
 
-The greenpack format addresses these problems while keeping serialized data fully self-describing. Greenpack is independent of any external schema, but as an optimization uses the Go source file itself as a schema to maintain current versioning and type information. Dynamic languages still have an easy time reading greenpack--it is just msgpack2. There's no need to worry about locating the schema under which data was written, as data stays self-contained.
+The truepack format addresses these problems while keeping serialized data fully self-describing. Truepack is independent of any external schema, but as an optimization uses the Go source file itself as a schema to maintain current versioning and type information. Dynamic languages still have an easy time reading truepack--it is just msgpack2. There's no need to worry about locating the schema under which data was written, as data stays self-contained.
 
-The central idea of greenpack: start with msgpack2, and append version numbers and type clues to the end of the field names when stored on the wire. We say type "clues" because the type information clarifies the original size and signed-ness of the type, which adds the missing detail to integers needed to fully reconstruct the original data from the serialization. This address the problem that commonly msgpack2 implementations ignore the spec and encode numbers using the smallest unsigned type possible, which corrupts the original type information and can induce decoding errors for large and negative numbers.
+The central idea of truepack: start with msgpack2, and append version numbers and type clues to the end of the field names when stored on the wire. We say type "clues" because the type information clarifies the original size and signed-ness of the type, which adds the missing detail to integers needed to fully reconstruct the original data from the serialization. This address the problem that commonly msgpack2 implementations ignore the spec and encode numbers using the smallest unsigned type possible, which corrupts the original type information and can induce decoding errors for large and negative numbers.
 
 If you've ever had your msgpack crash your server because you tried to change the type of a field but keep the same name, then you know how fragile msgpack can be. The type clue fixes that.
 
-The version `zid` number gives us the ability to evolve our data without crashes. The moniker `zid` reveals `greenpacks` evolution from `zebrapack`, where it stood for "zebrapack version id". Rather than rework all the tooling to expect `gid`, which might be confused with a `GUID`, we simply keep the convention. `zid` indicates the field version.
+The version `zid` number gives us the ability to evolve our data without crashes. The moniker `zid` reveals `truepacks` evolution from `zebrapack`, where it stood for "zebrapack version id". Rather than rework all the tooling to expect `gid`, which might be confused with a `GUID`, we simply keep the convention. `zid` indicates the field version.
 
-An additional advantage of the `zid` numbering is that it makes the serialization consistent and reproducible, since `greenpack` writes fields in `zid` order.
+An additional advantage of the `zid` numbering is that it makes the serialization consistent and reproducible, since `truepack` writes fields in `zid` order.
 
-One last easy idea: use the Go language struct definition syntax as our serialization schema. There is no need to invent a completely different format. Serialization for Go developers should be almost trivially easy. While we are focused on a serialization format for Go, because other language can read msgpack2, they can also readily read the data. While the schema is optional, greenpack (this repo) provides code generation tools based on the schema (Go file) that generates extremely fast serialization code.
+One last easy idea: use the Go language struct definition syntax as our serialization schema. There is no need to invent a completely different format. Serialization for Go developers should be almost trivially easy. While we are focused on a serialization format for Go, because other language can read msgpack2, they can also readily read the data. While the schema is optional, truepack (this repo) provides code generation tools based on the schema (Go file) that generates extremely fast serialization code.
 
 # the need for stronger integer typing
 
@@ -97,11 +103,11 @@ allowed, and no numbers are ever deleted.
 To get the effect of deletion, add the `deprecated` value
 in `msg` tag. This is an effective tombstone.
 It allows the tools (the `go` compiler and the
-`greenpack` code generator) to help detect
+`truepack` code generator) to help detect
 merge conflicts as soon as possible. If
 two people try to merge schemas where the same
 struct or field number is re-used, then
-when `greenpack` is run to regenerate the
+when `truepack` is run to regenerate the
 serialization code (under `go generate`),
 it will automatically detect the conflict,
 and flag the human to resolve the conflict
@@ -123,7 +129,7 @@ language. Go is expressive and yet easily parsed
 by the standard library packages included
 with Go itself.
 
-* Requirement: greenpack requires that the msgpack2 standard
+* Requirement: truepack requires that the msgpack2 standard
 be adhered to. Strings and raw binary byte arrays
 are distinct, and must be marked distinctly; msgpack1 encoding is
 not allowed.
@@ -140,7 +146,7 @@ data's type was originally.
 performance and comparison
 =========================
 
-`greenpack -fast-strings` is zero-allocation, and one
+`truepack -fast-strings` is zero-allocation, and one
 of the fastest serialization formats avaiable for Go.[1]
 
 [1] https://github.com/glycerine/go_serialization_benchmarks
@@ -157,11 +163,11 @@ while. However the convenience of msgpack2 won
 me over. Moreover CapnProto's layout format
 is undocumented, it requires a C++ build chain to
 build the IDL compiler, and unused fields always
-take space on the wire. `greenpack` is pure Go,
+take space on the wire. `truepack` is pure Go,
 and there are over 50 msgpack libraries -- one for every
 language imaginable -- cited at http://msgpack.org.
 
-Compared to (Gogoprotobuf) ProtcolBuffers, greenpack reads
+Compared to (Gogoprotobuf) ProtcolBuffers, truepack reads
 are 6% faster on these microbenchmarks. Writes
 are 15% faster and do no allocation; GogoprotobufMarshal
 appears to allocate on write.
@@ -203,13 +209,13 @@ command line flags
 ------------------
 
 ~~~
-  $ greenpack -h
+  $ truepack -h
 
-Usage of greenpack:
+Usage of truepack:
 
   -alltuple
     	use tuples for everything. Negates the point
-        of greenpack, but useful in a pinch for
+        of truepack, but useful in a pinch for
         performance. Provides no data versioning
         whatsoever. If you even so much as change
         the order of your fields, you won't be
@@ -275,7 +281,7 @@ field contains its zero-value (see the Go spec), then it
 is not serialized on the wire.
 
 If you wish to consume space unnecessarily, you can
-use the `greenpack -write-zeros` flag. Then only
+use the `truepack -write-zeros` flag. Then only
 fields specifically marked with the struct tag
 `omitempty` will be treated as such.
 
@@ -302,9 +308,9 @@ NB: Under tuple encoding (https://github.com/tinylib/msgp/wiki/Preprocessor-Dire
 
 The `addzid` utility (in the cmd/addzid subdir) can help you
 get started. Running `addzid mysource.go` on a .go source file
-will add the `zid:"0"`... fields automatically. This makes adding greenpack
+will add the `zid:"0"`... fields automatically. This makes adding truepack
 serialization to existing Go projects easy.
-See https://github.com/glycerine/greenpack/blob/master/cmd/addzid/README.md
+See https://github.com/glycerine/truepack/blob/master/cmd/addzid/README.md
 for more detail.
 
 ## used by
@@ -324,19 +330,19 @@ Portions Copyright (c) 2014 Philip Hofer
 Portions Copyright (c) 2009 The Go Authors (license at http://golang.org) where indicated
 ~~~
 
-LICENSE: MIT. See https://github.com/glycerine/greenpack/blob/master/LICENSE
+LICENSE: MIT. See https://github.com/glycerine/truepack/blob/master/LICENSE
 
 ancestor codebase: tinylib/msgp
 ------------------
 
-`greenpack` gets most of its speed by descending from the
+`truepack` gets most of its speed by descending from the
 fantastic and highly tuned https://github.com/tinylib/msgp library by
 Philip Hofer. The special tag and shim handling is best documented
 in the `msgp` writeup and wiki [https://github.com/tinylib/msgp/wiki].
 
-Advances in `greenpack` beyond `msgp`:
+Advances in `truepack` beyond `msgp`:
 
-* with `zid` numbering, serialization becomes consistent and reproducible, since `greenpack` writes fields in `zid` order.
+* with `zid` numbering, serialization becomes consistent and reproducible, since `truepack` writes fields in `zid` order.
 
 * all fields are `omitempty` by default. If you don't use a field, you don't pay for it in serialization time.
 
@@ -344,7 +350,7 @@ Advances in `greenpack` beyond `msgp`:
 
 * support for marking fields as deprecated
 
-* if you don't want the zid and type-clue appended to field names, the `-omit-clue` option means you can use `greenpack` as just a better (omit empty by default) msgpack-only generator.
+* if you don't want the zid and type-clue appended to field names, the `-omit-clue` option means you can use `truepack` as just a better (omit empty by default) msgpack-only generator.
 
 * the `-alltuple` flag is convenient if you do alot of tuple-only work.
 
@@ -354,7 +360,7 @@ Advances in `greenpack` beyond `msgp`:
 
 ### appendix A: type clues
 
-(see prim2clue in https://github.com/glycerine/greenpack/blob/master/gen/elem.go#L112)
+(see prim2clue in https://github.com/glycerine/truepack/blob/master/gen/elem.go#L112)
 ~~~
 base types:
 "bin" // []byte, a slice of bytes
@@ -408,12 +414,12 @@ This is a code generation tool and serialization library for [MessagePack](http:
 In a source file, include the following directive:
 
 ```go
-//go:generate greenpack
+//go:generate truepack
 ```
 
-The `greenpack` command will generate serialization methods for all exported type declarations in the file. If you add the flag `-msgp`, it will generate msgpack2 rather than greenpack format.
+The `truepack` command will generate serialization methods for all exported type declarations in the file. If you add the flag `-msgp`, it will generate msgpack2 rather than truepack format.
 
-For other language's use, schemas can can be written to a separate file using `greenpack -file my.go -write-schema` at the shell. (By default schemas are not written to the wire, just as in protobufs/CapnProto/Thrift.)
+For other language's use, schemas can can be written to a separate file using `truepack -file my.go -write-schema` at the shell. (By default schemas are not written to the wire, just as in protobufs/CapnProto/Thrift.)
 
 You can [read more about the code generation options here](http://github.com/tinylib/msgp/wiki/Using-the-Code-Generator).
 
@@ -490,6 +496,6 @@ If the output compiles, then there's a pretty good chance things are fine. (Plus
 
 ### Performance
 
-If you like benchmarks, see [here](http://bravenewgeek.com/so-you-wanna-go-fast/) and above in the greenpack benchmarks section; [see here for the benchmark source code](https://github.com/glycerine/go_serialization_benchmarks).
+If you like benchmarks, see [here](http://bravenewgeek.com/so-you-wanna-go-fast/) and above in the truepack benchmarks section; [see here for the benchmark source code](https://github.com/glycerine/go_serialization_benchmarks).
 
 As one might expect, the generated methods that deal with `[]byte` are faster for small objects, but the `io.Reader/Writer` methods are generally more memory-efficient (and, at some point, faster) for large (> 2KB) objects.

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/glycerine/greenpack/cfg"
-	"github.com/glycerine/greenpack/msgp"
+	"github.com/glycerine/truepack/cfg"
+	"github.com/glycerine/truepack/msgp"
 )
 
 func marshal(w io.Writer, cfg *cfg.GreenConfig) *marshalGen {

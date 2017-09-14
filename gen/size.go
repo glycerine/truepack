@@ -5,8 +5,8 @@ import (
 	"io"
 	"strconv"
 
-	"github.com/glycerine/greenpack/cfg"
-	"github.com/glycerine/greenpack/msgp"
+	"github.com/glycerine/truepack/cfg"
+	"github.com/glycerine/truepack/msgp"
 )
 
 type sizeState uint8

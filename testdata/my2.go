@@ -1,7 +1,7 @@
 package testdata
 
 // gotta test the tests too!
-//go:generate greenpack  -unexported
+//go:generate truepack  -unexported
 
 type u struct {
 	m map[string]*Tr `zid:"0"`

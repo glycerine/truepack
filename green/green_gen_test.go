@@ -1,14 +1,14 @@
 package green
 
 // NOTE: THIS FILE WAS PRODUCED BY THE
-// GREENPACK CODE GENERATION TOOL (github.com/glycerine/greenpack)
+// GREENPACK CODE GENERATION TOOL (github.com/glycerine/truepack)
 // DO NOT EDIT
 
 import (
 	"bytes"
 	"testing"
 
-	"github.com/glycerine/greenpack/msgp"
+	"github.com/glycerine/truepack/msgp"
 )
 
 func TestMarshalUnmarshalField(t *testing.T) {

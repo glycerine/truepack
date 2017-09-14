@@ -5,12 +5,12 @@ import (
 	"testing"
 
 	cv "github.com/glycerine/goconvey/convey"
-	"github.com/glycerine/greenpack/msgp"
+	"github.com/glycerine/truepack/msgp"
 )
 
 func Test011OmitClueWorks(t *testing.T) {
 
-	cv.Convey("greenpack -omit-clue leaves off the trailing type and version information from the fieldnames", t, func() {
+	cv.Convey("truepack -omit-clue leaves off the trailing type and version information from the fieldnames", t, func() {
 
 		v := OmitClueTestStruct{
 			S: "hello",

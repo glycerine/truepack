@@ -5,12 +5,12 @@ import (
 	"testing"
 
 	cv "github.com/glycerine/goconvey/convey"
-	"github.com/glycerine/greenpack/msgp"
+	"github.com/glycerine/truepack/msgp"
 )
 
 func Test012AllTuple(t *testing.T) {
 
-	cv.Convey("greenpack -alltuple always writes tuples without fieldnames", t, func() {
+	cv.Convey("truepack -alltuple always writes tuples without fieldnames", t, func() {
 
 		v := TupleByDefaultTestStruct{
 			S: "hello",

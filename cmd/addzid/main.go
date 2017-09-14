@@ -3,7 +3,7 @@ addzid automatically adds `zid:"0"`, `zid:"1"`, ... tags to your Go structs.
 
 Given a set of golang (Go) source files, addzid will tag the public
 struct fields with sequential zid tags. This prepares your source
-so that it can be fed to the `greenpack` codegen tool.
+so that it can be fed to the `truepack` codegen tool.
 
 `addzid` was dervied from the author's `bambam` tool to support Greenpack.
 */
@@ -28,7 +28,7 @@ func use() {
 	fmt.Fprintf(os.Stderr, "     #   -OVERWRITE modify .go files in-place, adding zid tags (by default\n     #       we write to the to -o dir).\n")
 	fmt.Fprintf(os.Stderr, "     #\n     # required: at least one .go source file for struct definitions.\n     #  note: the .go source file to process must be listed last, after any options.\n")
 	fmt.Fprintf(os.Stderr, "     #\n")
-	fmt.Fprintf(os.Stderr, "     # [1] https://github.com/glycerine/greenpack \n")
+	fmt.Fprintf(os.Stderr, "     # [1] https://github.com/glycerine/truepack \n")
 	fmt.Fprintf(os.Stderr, "\n")
 	os.Exit(1)
 }

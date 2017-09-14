@@ -4,8 +4,8 @@ import (
 	"time"
 )
 
-//go:generate greenpack
-//go:generate greenpack -o my_msgp_gen.go -method-prefix=MSGP -io=false -tests=false
+//go:generate truepack
+//go:generate truepack -o my_msgp_gen.go -method-prefix=MSGP -io=false -tests=false
 
 const greenSchemaId64 = 0x6eb25cc0f9a3e
 

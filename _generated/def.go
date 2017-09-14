@@ -1,12 +1,12 @@
 package _generated
 
 import (
-	"github.com/glycerine/greenpack/msgp"
+	"github.com/glycerine/truepack/msgp"
 	"os"
 	"time"
 )
 
-//go:generate greenpack -o generated.go
+//go:generate truepack -o generated.go
 
 // All of the struct
 // definitions in this
@@ -190,7 +190,7 @@ func myenumStr(s string) MyEnum {
 // test pass-specific directive
 // :encode ignore Insane
 
-// anonymous structs can't be serialized with greenpack,
+// anonymous structs can't be serialized with truepack,
 // because the fieldsempty/everything omitempty by default
 // logic requires named types when we define the helper
 // method fieldsNotEmpty().

@@ -37,7 +37,7 @@ func (c *GreenConfig) DefineFlags(fs *flag.FlagSet) {
 
 	fs.BoolVar(&c.ReadStringsFast, "fast-strings", false, "for speed when reading a string in a message that won't be reused, this flag means we'll use unsafe to cast the string header and avoid allocation.")
 	fs.StringVar(&c.MethodPrefix, "method-prefix", "", "(optional) prefix that will be pre-prended to the front of generated method names; useful when you need to avoid namespace collisions, but the generated tests will break/the msgp package interfaces won't be satisfied.")
-	fs.BoolVar(&c.AllTuple, "alltuple", false, "use tuples for everything. Negates the point of greenpack, but useful in a pinch for performance. Provides no data versioning whatsoever. If you even so much as change the order of your fields, you won't be able to read back your earlier data correctly/without crashing.")
+	fs.BoolVar(&c.AllTuple, "alltuple", false, "use tuples for everything. Negates the point of truepack, but useful in a pinch for performance. Provides no data versioning whatsoever. If you even so much as change the order of your fields, you won't be able to read back your earlier data correctly/without crashing.")
 	fs.BoolVar(&c.SkipZidClue, "omit-clue", false, "don't append zid and clue to field name (makes things just like msgpack2 traditional encoding, without version + type clue)")
 	fs.BoolVar(&c.Msgpack2, "msgpack2", false, "(alias for -omit-clue) don't append zid and clue to field name (makes things just like msgpack2 traditional encoding, without version + type clue)")
 	fs.BoolVar(&c.ShowVersion, "version", false, "print version info and exit")

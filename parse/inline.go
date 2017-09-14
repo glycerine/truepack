@@ -2,7 +2,7 @@ package parse
 
 import (
 	"fmt"
-	"github.com/glycerine/greenpack/gen"
+	"github.com/glycerine/truepack/gen"
 )
 
 // This file defines when and how we
@@ -106,7 +106,7 @@ func (f *FileSet) propInline() {
 }
 
 const fatalloop = `detected infinite recursion in inlining loop!
-Please file a bug at github.com/glycerine/greenpack/issues!
+Please file a bug at github.com/glycerine/truepack/issues!
 Thanks!
 `
 

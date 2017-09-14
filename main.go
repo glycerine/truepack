@@ -1,6 +1,6 @@
-// greenpack is a code generation tool for
+// truepack is a code generation tool for
 // creating methods to serialize and de-serialize
-// Go data structures to and from Greenpack (a
+// Go data structures to and from Truepack (a
 // schema-based serialization format that is derived
 // from MessagePack2).
 //
@@ -8,15 +8,15 @@
 // To use it, include the following directive in a
 // go source file with types requiring source generation:
 //
-//     //go:generate greenpack
+//     //go:generate truepack
 //
 // The go generate tool should set the proper environment variables for
 // the generator to execute without any command-line flags. However, the
-// following options are supported, if you need them (See greenpack -h):
+// following options are supported, if you need them (See truepack -h):
 //
-//   $ greenpack -h
+//   $ truepack -h
 //
-//   Usage of greenpack:
+//   Usage of truepack:
 //
 //   -fast-strings
 //     	for speed when reading a string in a message that won't be
@@ -49,13 +49,13 @@
 //
 //  -no-structnames-onwire
 //    	don't embed the name of the struct in the
-//      serialized greenpack. Skipping the embedded
+//      serialized truepack. Skipping the embedded
 //      struct names saves time and space and matches
 //      what protocol buffers/thrift/capnproto/msgpack do.
 //      You must know the type on the wire you expect;
 //      or embed a type tag in one universal wrapper
 //      struct. Embedded struct names are a feature
-//      of Greenpack to help with dynamic language
+//      of Truepack to help with dynamic language
 //      bindings.
 //
 //   -o string
@@ -76,7 +76,7 @@
 // 		write schema header to this file; - for stdout
 //
 //
-// For more information, please read README.md, and the wiki at github.com/glycerine/greenpack
+// For more information, please read README.md, and the wiki at github.com/glycerine/truepack
 //
 package main
 
@@ -87,21 +87,21 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/glycerine/greenpack/cfg"
-	"github.com/glycerine/greenpack/gen"
-	"github.com/glycerine/greenpack/parse"
-	"github.com/glycerine/greenpack/printer"
+	"github.com/glycerine/truepack/cfg"
+	"github.com/glycerine/truepack/gen"
+	"github.com/glycerine/truepack/parse"
+	"github.com/glycerine/truepack/printer"
 )
 
 func main() {
-	myflags := flag.NewFlagSet("greenpack", flag.ExitOnError)
+	myflags := flag.NewFlagSet("truepack", flag.ExitOnError)
 	c := &cfg.GreenConfig{}
 	c.DefineFlags(myflags)
 
 	err := myflags.Parse(os.Args[1:])
 	err = c.ValidateConfig()
 	if err != nil {
-		fmt.Printf("greenpack command line flag error: '%s'\n", err)
+		fmt.Printf("truepack command line flag error: '%s'\n", err)
 		os.Exit(1)
 	}
 
@@ -150,7 +150,7 @@ func Run(mode gen.Method, c *cfg.GreenConfig) error {
 	if mode&^gen.Test == 0 {
 		return nil
 	}
-	fmt.Println("======== Greenpack Code Generator  =======")
+	fmt.Println("======== Truepack Code Generator  =======")
 	fmt.Printf(">>> Input: \"%s\"\n", c.GoFile)
 	var fs *parse.FileSet
 	var err error

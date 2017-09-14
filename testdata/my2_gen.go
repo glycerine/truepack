@@ -1,11 +1,11 @@
 package testdata
 
 // NOTE: THIS FILE WAS PRODUCED BY THE
-// GREENPACK CODE GENERATION TOOL (github.com/glycerine/greenpack)
+// TRUEPACK CODE GENERATION TOOL (github.com/glycerine/truepack)
 // DO NOT EDIT
 
 import (
-	"github.com/glycerine/greenpack/msgp"
+	"github.com/glycerine/truepack/msgp"
 )
 
 // DecodeMsg implements msgp.Decodable

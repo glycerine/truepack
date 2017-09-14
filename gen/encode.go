@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/glycerine/greenpack/cfg"
-	"github.com/glycerine/greenpack/msgp"
+	"github.com/glycerine/truepack/cfg"
+	"github.com/glycerine/truepack/msgp"
 )
 
 func encode(w io.Writer, cfg *cfg.GreenConfig) *encodeGen {

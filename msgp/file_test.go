@@ -5,7 +5,7 @@ package msgp_test
 import (
 	"bytes"
 	"crypto/rand"
-	"github.com/glycerine/greenpack/msgp"
+	"github.com/glycerine/truepack/msgp"
 	prand "math/rand"
 	"os"
 	"testing"

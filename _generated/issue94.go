@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-//go:generate greenpack
+//go:generate truepack
 
 // Issue 94: shims were not propogated recursively,
 // which caused shims that weren't at the top level

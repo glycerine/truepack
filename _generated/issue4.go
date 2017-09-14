@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-//go:generate greenpack -fast-strings -o issue4_gen.go
+//go:generate truepack -fast-strings -o issue4_gen.go
 
 type RowIssue4 struct {
 	K []interface{} `msg:"K"`

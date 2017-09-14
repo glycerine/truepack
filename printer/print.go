@@ -7,9 +7,9 @@ import (
 	"io/ioutil"
 	"strings"
 
-	"github.com/glycerine/greenpack/cfg"
-	"github.com/glycerine/greenpack/gen"
-	"github.com/glycerine/greenpack/parse"
+	"github.com/glycerine/truepack/cfg"
+	"github.com/glycerine/truepack/gen"
+	"github.com/glycerine/truepack/parse"
 	"golang.org/x/tools/imports"
 )
 
@@ -90,7 +90,7 @@ func generate(f *parse.FileSet, mode gen.Method, cfg *cfg.GreenConfig) (*bytes.B
 	writePkgHeader(outbuf, f.Package)
 
 	myImports := []string{"fmt"}
-	myImports = append(myImports, "github.com/glycerine/greenpack/msgp")
+	myImports = append(myImports, "github.com/glycerine/truepack/msgp")
 	for _, imp := range f.Imports {
 		if imp.Name != nil {
 			// have an alias, include it.
@@ -108,9 +108,9 @@ func generate(f *parse.FileSet, mode gen.Method, cfg *cfg.GreenConfig) (*bytes.B
 		testbuf = bytes.NewBuffer(make([]byte, 0, 4096))
 		writePkgHeader(testbuf, f.Package)
 		if mode&(gen.Encode|gen.Decode) != 0 {
-			writeImportHeader(testbuf, "bytes", "github.com/glycerine/greenpack/msgp", "testing")
+			writeImportHeader(testbuf, "bytes", "github.com/glycerine/truepack/msgp", "testing")
 		} else {
-			writeImportHeader(testbuf, "github.com/glycerine/greenpack/msgp", "testing")
+			writeImportHeader(testbuf, "github.com/glycerine/truepack/msgp", "testing")
 		}
 		testwr = testbuf
 	}
@@ -121,7 +121,7 @@ func writePkgHeader(b *bytes.Buffer, name string) {
 	b.WriteString("package ")
 	b.WriteString(name)
 	b.WriteByte('\n')
-	b.WriteString("// NOTE: THIS FILE WAS PRODUCED BY THE\n// GREENPACK CODE GENERATION TOOL (github.com/glycerine/greenpack)\n// DO NOT EDIT\n\n")
+	b.WriteString("// NOTE: THIS FILE WAS PRODUCED BY THE\n// TRUEPACK CODE GENERATION TOOL (github.com/glycerine/truepack)\n// DO NOT EDIT\n\n")
 }
 
 func writeImportHeader(b *bytes.Buffer, imports ...string) {

@@ -2,7 +2,7 @@ package _generated
 
 import (
 	"bytes"
-	"github.com/glycerine/greenpack/msgp"
+	"github.com/glycerine/truepack/msgp"
 	"reflect"
 	"testing"
 	"time"

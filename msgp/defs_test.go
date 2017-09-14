@@ -1,6 +1,6 @@
 package msgp_test
 
-//go:generate greenpack -o=defgen_test.go -tests=false
+//go:generate truepack -o=defgen_test.go -tests=false
 
 type Blobs []Blob
 

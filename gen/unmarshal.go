@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/glycerine/greenpack/cfg"
+	"github.com/glycerine/truepack/cfg"
 )
 
 func unmarshal(w io.Writer, cfg *cfg.GreenConfig) *unmarshalGen {

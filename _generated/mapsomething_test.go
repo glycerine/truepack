@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-//go:generate greenpack
+//go:generate truepack
 
 type Row struct {
 	K []interface{} `msg:"K"`
@@ -12,7 +12,7 @@ type Row struct {
 	T int64         `msg:"T"`
 }
 
-// https://github.com/glycerine/greenpack/issues/1
+// https://github.com/glycerine/truepack/issues/1
 func TestMarshalMapOfConcreteType(t *testing.T) {
 
 	m := make(map[string][]float64)
