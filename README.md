@@ -1,7 +1,9 @@
 truepack: a serialization convention for msgpack2; adds field versioning and type annotation.
 ==========
 
-`truepack` is two things:
+`truepack` is a derivative of `greenpack`. Like https://github.com/glycerine/greenpack, it offers fast msgpack2 based encoding. The one difference is that `truepack` does no integer compression based on the int's value. This is useful when using interfaces and reflection and you want to read back the same type you originally wrote, regardless of the value contained in the int. The same rule applies to all integer types: int8, int16, int32, int64, int, uint8, uint16, uint32, uint64, and uint.
+
+In short, `truepack` is two things:
 
 (1) a convention for naming fields in `msgpack` data: we take the
 original field name and append a version number and basic type indicator.

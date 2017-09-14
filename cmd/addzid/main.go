@@ -5,7 +5,7 @@ Given a set of golang (Go) source files, addzid will tag the public
 struct fields with sequential zid tags. This prepares your source
 so that it can be fed to the `truepack` codegen tool.
 
-`addzid` was dervied from the author's `bambam` tool to support Greenpack.
+`addzid` was dervied from the author's `bambam` tool to support Truepack.
 */
 package main
 
@@ -18,7 +18,7 @@ import (
 
 func use() {
 	fmt.Fprintf(os.Stderr, "\nuse: addzid {-o outdir} myGoSourceFile.go myGoSourceFile2.go ...\n")
-	fmt.Fprintf(os.Stderr, "     # addzid makes it easy to add Greenpack serialization[1] to Go source files.\n")
+	fmt.Fprintf(os.Stderr, "     # addzid makes it easy to add Truepack serialization[1] to Go source files.\n")
 	fmt.Fprintf(os.Stderr, "     # addzid reads .go files and adds `zid` tags to struct fields.\n")
 	fmt.Fprintf(os.Stderr, "     #\n     # options:\n")
 	fmt.Fprintf(os.Stderr, "     #   -o=\"odir\" specifies the directory to write to (created if need be).\n")
